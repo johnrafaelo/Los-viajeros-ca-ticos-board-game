@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supreme's Board</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Supreme's Board</h1>
+    <form method="POST">
+      <input
+        type="number"
+        name="seed"
+        placeholder="Enter seed (optional)"
+      >
+      <button type="submit">Generate</button>
+    </form>
+
+    {% if seed is defined %}
+      <div class="seed">
+        Seed: <strong>{{ seed }}</strong>
+      </div>
+
+      <div class="board">
+        {% for position in range(49) %}
+          {% if position in bombs %}
+            <div class="cell bomb">B</div>
+          {% elif position in questions %}
+            <div class="cell question">?</div>
+          {% elif position in powerups %}
+            <div class="cell powerups">$</div>
+          {% else %}
+            <div class="cell"></div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="legend">
+        <span>
+          <strong class="bomb">B</strong>
+          Bomb
+        </span>
+        <span>
+          <strong class="question">?</strong>
+          Question
+        </span>
+        <span>
+          <strong class="powerups">$</strong>
+          Power-ups
+        </span>
+      </div>
+
+      <div class="info">
+        Bombs: {{ bombs|length }} |
+        Questions: {{ questions|length }} |
+        Power-ups: {{ powerups|length }}
+      </div>
+    {% else %}
+      <p class="info">
+        Enter a seed or leave it empty to generate a random board.
+      </p>
+    {% endif %}
+  </div>
+</body>
+</html>
